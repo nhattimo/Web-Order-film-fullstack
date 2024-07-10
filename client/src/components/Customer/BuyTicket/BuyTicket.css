@@ -1,0 +1,134 @@
+.buy-ticket__container {
+    padding: 20px;
+    background-color: #2e2e2e;
+    color: #fff;
+}
+
+.buy-ticket__header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.buy-ticket__showtimes {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.showtime-btn {
+    padding: 10px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.showtime-btn.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.showtime-btn:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.buy-ticket__seats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.seat-map {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 10px;
+    padding: 10px;
+    background-color: #1c1c1c;
+    border-radius: 5px;
+}
+
+.seat-row {
+    display: contents;
+}
+
+.seat-btn {
+    padding: 5px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.seat-btn.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.seat-btn.unavailable {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.seat-btn:hover:not(.unavailable):not(.selected) {
+    background-color: #007bff;
+    color: white;
+}
+
+.buy-ticket__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1c1c1c;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.buy-ticket__movie-img {
+    width: 200px;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.buy-ticket__movie-info {
+    text-align: center;
+}
+
+.buy-ticket__actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-back {
+    background-color: #f0f0f0;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #ccc;
+}
+
+.btn-continue {
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.btn-continue:hover {
+    background-color: #0056b3;
+}

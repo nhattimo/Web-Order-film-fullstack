@@ -1,0 +1,84 @@
+.film-detail__container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.film-detail__main {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.film-detail__img {
+    max-width: 300px;
+    margin-right: 20px;
+}
+
+.film-detail__info {
+    flex: 1;
+}
+
+.film-detail__title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.film-detail__rating {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.film-detail__genres,
+.film-detail__duration,
+.film-detail__release-date,
+.film-detail__description,
+.film-detail__cast {
+    margin-bottom: 10px;
+}
+
+.film-detail__schedule {
+    margin-top: 20px;
+}
+
+.film-detail__schedule h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.film-detail__schedule-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.cinema {
+    margin-bottom: 20px;
+}
+
+.cinema h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    color: #fff;
+    background-color: #444;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.showtimes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.showtime-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.showtime-btn:hover {
+    background-color: #0056b3;
+}
