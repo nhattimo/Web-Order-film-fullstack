@@ -15,14 +15,55 @@ export class CategoryService {
   async getCategory(id: number) {
     const result = await this.categoryRepository.findOne({
       where: { id },
-      relations: ['productItems'],
+      relations: ['productItems.products'],
     });
-    return result;
+
+    if (result) {
+      const uniqueProducts = new Map();
+
+      // Kết hợp tất cả sản phẩm vào Map để loại bỏ trùng lặp
+      result.productItems.forEach((item) => {
+        item.products.forEach((product) => {
+          if (!uniqueProducts.has(product.id)) {
+            uniqueProducts.set(product.id, product);
+          }
+        });
+      });
+
+      // Chuyển Map thành mảng
+      const products = Array.from(uniqueProducts.values());
+
+      return {
+        id: result.id,
+        name: result.name,
+        products,
+      };
+    }
+
+    return null; // Hoặc xử lý lỗi nếu không tìm thấy danh mục
   }
 
-  async getCategories(): Promise<Category[]> {
-    return this.categoryRepository.find({
-      relations: ['productItems'],
+  async getCategories(): Promise<any[]> {
+    const categories = await this.categoryRepository.find({
+      relations: ['productItems.products'],
+    });
+
+    return categories.map((category) => {
+      const uniqueProducts = new Map();
+      category.productItems.forEach((item) => {
+        item.products.forEach((product) => {
+          if (!uniqueProducts.has(product.id)) {
+            uniqueProducts.set(product.id, product);
+          }
+        });
+      });
+      const products = Array.from(uniqueProducts.values());
+
+      return {
+        id: category.id,
+        name: category.name,
+        products,
+      };
     });
   }
 
