@@ -67,4 +67,12 @@ export class SchedulesService {
       },
     });
   }
+
+  // Phương thức mới để lấy lịch chiếu theo cinema
+  async findSchedulesByCinema(cinemaId: number): Promise<Schedules[]> {
+    const result = await this.schedulesRepository.find({
+      where: { cinemaId },
+    });
+    return result;
+  }
 }

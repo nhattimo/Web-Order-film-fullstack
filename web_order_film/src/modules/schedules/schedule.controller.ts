@@ -71,4 +71,12 @@ export class scheduleController {
   ) {
     return this.schedulesService.getSeatsBySchedule(id, cinemaId);
   }
+
+  // Endpoint mới để lấy lịch chiếu theo cinema
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.Admin)
+  @Get('cinema/:cinemaId')
+  getSchedulesByCinema(@Param('cinemaId') cinemaId: number) {
+    return this.schedulesService.findSchedulesByCinema(cinemaId);
+  }
 }

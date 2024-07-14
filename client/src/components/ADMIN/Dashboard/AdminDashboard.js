@@ -28,10 +28,10 @@ const AdminDashboard = () => {
                     </li>
                     <li className="admin-dashboard__nav-item">
                         <Link
-                            to="/admin/seats"
+                            to="/admin/cinemas"
                             className="admin-dashboard__nav-link"
                         >
-                            Manage Seats
+                            Manage Cinemas
                         </Link>
                     </li>
                     {/* Add more links as needed */}

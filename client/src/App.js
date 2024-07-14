@@ -13,6 +13,11 @@ import AdminSignIn from "./components/ADMIN/SignIn/AdminSignIn.js";
 import BuyTicket from "./components/Customer/BuyTicket/BuyTicket.js";
 import Profile from "./components/Customer/Profile/Profile.js";
 import PersonalInfo from "./components/Customer/PersonalInfo/PersonalInfo.js";
+import SeatList from "./components/ADMIN/Seat/SeatList.js";
+import SeatForm from "./components/ADMIN/Seat/SeatForm.js";
+import CinemaList from "./components/ADMIN/Cinema/CinemaList.js";
+import ScheduleForm from "./components/ADMIN/Schedule/ScheduleForm.js";
+import ScheduleList from "./components/ADMIN/Schedule/ScheduleList.js";
 
 const App = () => {
     return (
@@ -53,6 +58,19 @@ const App = () => {
                         path="/buy-ticket/:scheduleId"
                         element={<BuyTicket />}
                     />
+                    <Route
+                        path="/admin/cinemas/:cinemaId/seats"
+                        element={<SeatList />}
+                    />
+                    <Route
+                        path="/admin/cinemas/:cinemaId/schedules/add"
+                        element={<ScheduleForm />}
+                    />
+                    <Route
+                        path="/admin/cinemas/:cinemaId/schedules"
+                        element={<ScheduleList />}
+                    />
+                    <Route path="/admin/cinemas" element={<CinemaList />} />
                 </Routes>
             </Layout>
         </Router>

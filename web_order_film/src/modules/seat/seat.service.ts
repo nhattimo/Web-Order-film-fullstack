@@ -54,4 +54,9 @@ export class SeatService {
     }
     return seats;
   }
+
+  async addSeatsBulk(createSeatDtos: InsertSeatDto[]) {
+    const seats = this.seatReponsitory.create(createSeatDtos);
+    return this.seatReponsitory.save(seats);
+  }
 }

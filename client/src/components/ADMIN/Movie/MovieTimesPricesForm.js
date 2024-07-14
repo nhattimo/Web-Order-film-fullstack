@@ -11,13 +11,26 @@ const MovieTimesPricesForm = ({ movieId }) => {
         startTime: new Date(),
         endTime: new Date(),
     });
+    const [editingId, setEditingId] = useState(null);
     const [error, setError] = useState("");
 
     useEffect(() => {
         const fetchMovieTimesPrices = async () => {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                alert("You are not authorized to perform this action.");
+                return;
+            }
+
             try {
                 const response = await axios.get(
-                    `http://localhost:3000/movieTimesPrice/movie/${movieId}`
+                    `http://localhost:3000/movieTimesPrice/movie/${movieId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
                 );
                 setMovieTimesPrices(response.data);
             } catch (err) {
@@ -59,28 +72,45 @@ const MovieTimesPricesForm = ({ movieId }) => {
         }
 
         const dataToSend = {
-            ...formData,
-            movieId: parseInt(movieId, 10), // Ensure movieId is an integer
-            unitPrice: parseInt(formData.unitPrice, 10), // Ensure unitPrice is an integer
+            unitPrice: parseInt(formData.unitPrice, 10),
+            movieId: parseInt(movieId, 10),
             startTime: formData.startTime.toISOString(),
             endTime: formData.endTime.toISOString(),
         };
 
-        console.log("Data to send:", dataToSend); // Log dữ liệu trước khi gửi lên API
+        console.log("Data to send:", dataToSend);
 
         try {
-            await axios.post(
-                `http://localhost:3000/movieTimesPrice`,
-                dataToSend,
+            if (editingId) {
+                await axios.put(
+                    `http://localhost:3000/movieTimesPrice/${editingId}`,
+                    dataToSend,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setEditingId(null);
+            } else {
+                await axios.post(
+                    `http://localhost:3000/movieTimesPrice`,
+                    dataToSend,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+            }
+
+            const response = await axios.get(
+                `http://localhost:3000/movieTimesPrice/movie/${movieId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 }
-            );
-            // Fetch the updated list after adding a new item
-            const response = await axios.get(
-                `http://localhost:3000/movieTimesPrice/movie/${movieId}`
             );
             setMovieTimesPrices(response.data);
             setFormData({
@@ -88,11 +118,53 @@ const MovieTimesPricesForm = ({ movieId }) => {
                 startTime: new Date(),
                 endTime: new Date(),
             });
-            alert("Movie times and prices added successfully!");
+            alert("Movie times and prices saved successfully!");
         } catch (err) {
             console.error("Error saving movie times and prices:", err);
             setError("Error saving movie times and prices. Please try again.");
         }
+    };
+
+    const handleDelete = async (id) => {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            alert("You are not authorized to perform this action.");
+            return;
+        }
+
+        try {
+            await axios.delete(`http://localhost:3000/movieTimesPrice/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setMovieTimesPrices(
+                movieTimesPrices.filter((mtp) => mtp.id !== id)
+            );
+            alert("Movie time and price deleted successfully!");
+        } catch (err) {
+            console.error("Error deleting movie time and price:", err);
+            setError("Error deleting movie time and price. Please try again.");
+        }
+    };
+
+    const handleEdit = (mtp) => {
+        setEditingId(mtp.id);
+        setFormData({
+            unitPrice: mtp.unitPrice.toString(),
+            startTime: new Date(mtp.startTime),
+            endTime: new Date(mtp.endTime),
+        });
+    };
+
+    const handleCancelEdit = () => {
+        setEditingId(null);
+        setFormData({
+            unitPrice: "",
+            startTime: new Date(),
+            endTime: new Date(),
+        });
     };
 
     return (
@@ -136,8 +208,17 @@ const MovieTimesPricesForm = ({ movieId }) => {
                 {error && <p className="form-error">{error}</p>}
                 <div className="form-actions">
                     <button type="submit" className="btn btn-primary">
-                        Save Changes
+                        {editingId ? "Update" : "Save"} Changes
                     </button>
+                    {editingId && (
+                        <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={handleCancelEdit}
+                        >
+                            Cancel Edit
+                        </button>
+                    )}
                 </div>
             </form>
             <div className="movie-times-prices-list">
@@ -146,19 +227,34 @@ const MovieTimesPricesForm = ({ movieId }) => {
                     {movieTimesPrices.map((mtp) => (
                         <li key={mtp.id}>
                             {mtp.unitPrice} -{" "}
-                            {new Date(mtp.startTime).toLocaleDateString()}{" "}
+                            {new Date(mtp.startTime).toLocaleDateString(
+                                "vi-VN"
+                            )}{" "}
                             {new Date(mtp.startTime).toLocaleTimeString(
-                                "en-GB",
+                                "vi-VN",
                                 {
                                     hour: "2-digit",
                                     minute: "2-digit",
                                 }
                             )}{" "}
-                            to {new Date(mtp.endTime).toLocaleDateString()}{" "}
-                            {new Date(mtp.endTime).toLocaleTimeString("en-GB", {
+                            to{" "}
+                            {new Date(mtp.endTime).toLocaleDateString("vi-VN")}{" "}
+                            {new Date(mtp.endTime).toLocaleTimeString("vi-VN", {
                                 hour: "2-digit",
                                 minute: "2-digit",
                             })}
+                            <button
+                                onClick={() => handleEdit(mtp)}
+                                className="btn btn-secondary"
+                            >
+                                Edit
+                            </button>
+                            <button
+                                onClick={() => handleDelete(mtp.id)}
+                                className="btn btn-danger"
+                            >
+                                Delete
+                            </button>
                         </li>
                     ))}
                 </ul>

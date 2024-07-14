@@ -42,6 +42,13 @@ export class SeatController {
 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.Admin)
+  @Post('bulk')
+  addSeatsBulk(@Body() createSeatDtos: InsertSeatDto[]) {
+    return this.seatService.addSeatsBulk(createSeatDtos);
+  }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.Admin)
   @Put('/:id')
   updateSeat(
     @Param('id', { transform: (value) => Number(value) }) id: number,
