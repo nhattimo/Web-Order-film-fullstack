@@ -15,13 +15,51 @@ export class SupplierService {
   async getSupplier(id: number) {
     const result = await this.supplierRepository.findOne({
       where: { id },
-      relations: ['productItems'],
+      relations: ['productItems.products'],
     });
-    return result;
-  }
 
-  async getSuppliers(): Promise<Supplier[]> {
-    return this.supplierRepository.find({ relations: ['productItems'] });
+    if (result) {
+      const uniqueProducts = new Map();
+
+      result.productItems.forEach((item) => {
+        item.products.forEach((product) => {
+          if (!uniqueProducts.has(product.id)) {
+            uniqueProducts.set(product.id, product);
+          }
+        });
+      });
+
+      return {
+        id: result.id,
+        name: result.name,
+        products: Array.from(uniqueProducts.values()), // Trả về danh sách sản phẩm duy nhất
+      };
+    }
+
+    return null; // Hoặc xử lý lỗi nếu không tìm thấy nhà cung cấp
+  }
+  async getSuppliers(): Promise<any[]> {
+    const suppliers = await this.supplierRepository.find({
+      relations: ['productItems.products'],
+    });
+
+    return suppliers.map((supplier) => {
+      const uniqueProducts = new Map();
+
+      supplier.productItems.forEach((item) => {
+        item.products.forEach((product) => {
+          if (!uniqueProducts.has(product.id)) {
+            uniqueProducts.set(product.id, product);
+          }
+        });
+      });
+
+      return {
+        id: supplier.id,
+        name: supplier.name,
+        products: Array.from(uniqueProducts.values()), // Chỉ giữ lại sản phẩm duy nhất
+      };
+    });
   }
 
   async addSupplier(data: InsertSupplierDto): Promise<InsertSupplierResponse> {
