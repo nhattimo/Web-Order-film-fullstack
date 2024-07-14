@@ -1,0 +1,85 @@
+/* MovieList.css */
+
+.movie-list__container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.movie-list__container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.movie-list__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.movie-list__table th,
+.movie-list__table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.movie-list__table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.movie-list__table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.movie-list__table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.movie-list__table td {
+    vertical-align: middle;
+}
+
+.movie-list__table .btn {
+    padding: 5px 10px;
+    font-size: 14px;
+}

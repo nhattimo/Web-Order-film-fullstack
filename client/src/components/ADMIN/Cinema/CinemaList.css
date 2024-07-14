@@ -1,0 +1,47 @@
+.cinema-list__container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cinema-list__container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.cinema-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.cinema-list__item {
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.3s ease;
+}
+
+.cinema-list__item:hover {
+    background-color: #f1f1f1;
+}
+
+.cinema-list__info h3 {
+    margin: 0;
+    color: #333;
+}
+
+.cinema-list__info p {
+    margin: 0;
+    color: #666;
+}
