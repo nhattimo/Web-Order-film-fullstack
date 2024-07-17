@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from 'src/entities/employee.entity';
-import { Repository } from 'typeorm';
+import { Between, Like, Repository } from 'typeorm';
 import { InsertEmployeeDto } from './dto/request/insert-employee.dto';
 import { AccountEmployee } from 'src/entities/accountEmp.entity';
 import { UpdateProfileEmployeeMeDto } from './dto/request/update-profileMe.dto';
@@ -22,6 +22,23 @@ export class EmployeeService {
     @InjectRepository(AccountEmployee)
     private accountEmployeeReponsitory: Repository<AccountEmployee>,
   ) {}
+
+  async getByBirthYear(year: number): Promise<Employee[]> {
+    const startDate = new Date(year, 0, 1);
+    const endDate = new Date(year, 11, 31);
+
+    return this.employeeReponsitory.find({
+      where: {
+        birthDate: Between(startDate, endDate),
+      },
+    });
+  }
+
+  async getfirstName(firstName: string): Promise<Employee[]> {
+    return this.employeeReponsitory.find({
+      where: { firstName: Like(`%${firstName}%`) },
+    });
+  }
 
   async getEmployee(id: number) {
     const result = await this.employeeReponsitory.findOne({

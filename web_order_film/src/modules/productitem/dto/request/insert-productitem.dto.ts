@@ -1,4 +1,5 @@
 import { IsArray, IsInt, IsOptional, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class InsertProductItemDto {
   @IsOptional()
@@ -11,10 +12,12 @@ export class InsertProductItemDto {
 
   @IsOptional()
   @IsInt()
+  @Transform(({ value }) => parseInt(value, 10), { toClassOnly: true })
   stock: number;
 
   @IsOptional()
   @IsInt()
+  @Transform(({ value }) => parseInt(value, 10), { toClassOnly: true })
   rating: number;
 
   @IsOptional()
@@ -23,13 +26,18 @@ export class InsertProductItemDto {
 
   @IsOptional()
   @IsInt()
+  @Transform(({ value }) => parseInt(value, 10), { toClassOnly: true })
   categoryId: number;
 
   @IsOptional()
   @IsInt()
+  @Transform(({ value }) => parseInt(value, 10), { toClassOnly: true })
   supplierId: number;
 
   @IsOptional()
   @IsArray()
+  @Transform(({ value }) =>
+    typeof value === 'string' ? value.split(',').map(Number) : value,
+  )
   productIds: number[];
 }

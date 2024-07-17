@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -18,10 +19,23 @@ import { AuthGuard } from '../auth/auth.guard';
 import { updatePassWordCustomerDto } from '../customer/dto/request/update-passWorkCustomer.dto';
 import { UpdateProfileEmployeeMeDto } from './dto/request/update-profileMe.dto';
 import { UpdatePassWordMeDto } from './dto/request/update-passWordMe.dto';
+import { Employee } from 'src/entities/employee.entity';
 
 @Controller('/employee')
 export class EmployeeController {
   constructor(private employeeService: EmployeeService) {}
+
+  @Roles(Role.Admin)
+  @Get('search')
+  searchEmp(@Query('firstName') name: string): Promise<Employee[]> {
+    return this.employeeService.getfirstName(name);
+  }
+
+  @Roles(Role.Admin)
+  @Get('by-year')
+  async getByBirthYear(@Query('birthDate') year: number): Promise<Employee[]> {
+    return this.employeeService.getByBirthYear(year);
+  }
 
   @Get('/me')
   @UseGuards(AuthGuard, RolesGuard)

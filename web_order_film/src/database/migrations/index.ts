@@ -51,6 +51,7 @@ import { DropTablePriceseatschedule1720322504238 } from './1720322504238-DropTab
 import { DropColumnTypeSeat1720323557846 } from './1720323557846-DropColumnTypeSeat';
 import { AddColumnTypeSeat1720323663055 } from './1720323663055-AddColumnTypeSeat';
 import { MovieTimesPrice1720323899977 } from './1720323899977-MovieTimesPrice';
+import { DropclumnAccountCus1721101099092 } from './1721101099092-DropclumnAccountCus';
 
 export default [
   Genre1714047475239,
@@ -106,4 +107,5 @@ export default [
   DropColumnTypeSeat1720323557846,
   AddColumnTypeSeat1720323663055,
   MovieTimesPrice1720323899977,
+  DropclumnAccountCus1721101099092,
 ];

@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -19,10 +20,23 @@ import { RegisterCustomerDto } from './dto/request/register-customer.dto';
 import { Public } from '../auth/auth.setmetadata';
 import { UpdatePassWordDto } from './dto/request/update-passWord.dto';
 import { updatePassWordCustomerDto } from './dto/request/update-passWorkCustomer.dto';
+import { Customer } from 'src/entities/customer.entity';
 
 @Controller('/customer')
 export class CustomerController {
   constructor(private customerService: CustomerService) {}
+
+  @Roles(Role.Admin)
+  @Get('/search')
+  searchCus(@Query('firstName') name: string): Promise<Customer[]> {
+    return this.customerService.getfirstName(name);
+  }
+
+  @Roles(Role.Admin)
+  @Get('/by-year')
+  async getByBirthYear(@Query('birthDate') year: number): Promise<Customer[]> {
+    return this.customerService.getByBirthYear(year);
+  }
 
   @Get('/me')
   async getCustomerMe(@Req() req: any) {

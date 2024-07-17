@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InsertProductDto } from './dto/request/insert-products.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductItem } from 'src/entities/productIteam.entity';
-import { In, Repository } from 'typeorm';
+import { In, Like, Repository } from 'typeorm';
 import { Products } from 'src/entities/product.entity';
 import { InsertProductResponse } from './dto/response/insert-product.dto';
 
@@ -14,6 +14,12 @@ export class ProductsService {
     @InjectRepository(Products)
     private productsReponsitory: Repository<Products>,
   ) {}
+
+  async getProductName(name: string): Promise<Products[]> {
+    return this.productsReponsitory.find({
+      where: { name: Like(`%${name}%`) },
+    });
+  }
 
   async getProduct(id: number) {
     const result = await this.productsReponsitory.findOne({
