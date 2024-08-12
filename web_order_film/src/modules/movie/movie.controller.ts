@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -18,10 +19,17 @@ import { RolesGuard } from '../authorization/roles.guard';
 import { Roles } from '../authorization/roles.decorator';
 import { Role } from '../authorization/role.enum';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Movies } from 'src/entities/movie.entity';
 
 @Controller('/movies')
 export class MovieController {
   constructor(private movieService: MovieService) {}
+
+  @Public()
+  @Get('search')
+  searchMovie(@Query('name') name: string): Promise<Movies[]> {
+    return this.movieService.getMoviesName(name);
+  }
 
   @Public()
   @Get('/:id')

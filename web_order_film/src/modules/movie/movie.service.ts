@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { In, Like, Repository } from 'typeorm';
 import { Movies } from 'src/entities/movie.entity';
 import { Genres } from 'src/entities/genres.entity';
 import { InsertMovieDto } from './dto/request/insert-movie.dto';
@@ -17,6 +17,10 @@ export class MovieService {
     @InjectRepository(Schedules)
     private scheduleRepository: Repository<Schedules>,
   ) {}
+
+  async getMoviesName(name: string): Promise<Movies[]> {
+    return this.movieRepository.find({ where: { name: Like(`%${name}%`) } });
+  }
 
   async getMovie(id: number) {
     const result = await this.movieRepository.findOne({

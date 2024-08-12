@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -18,10 +19,17 @@ import { RolesGuard } from '../authorization/roles.guard';
 import { Roles } from '../authorization/roles.decorator';
 import { Role } from '../authorization/role.enum';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Products } from 'src/entities/product.entity';
 
 @Controller('/product')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
+
+  @Public()
+  @Get('search')
+  searchProduct(@Query('name') name: string): Promise<Products[]> {
+    return this.productsService.getProductName(name);
+  }
 
   @Public()
   @Get('/:id')

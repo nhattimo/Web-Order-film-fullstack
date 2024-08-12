@@ -26,7 +26,7 @@ export class Customer {
   lastName: string;
 
   @Column({ name: 'birth_date', type: 'date' })
-  birthDate: string;
+  birthDate: Date;
 
   @Column()
   email: string;

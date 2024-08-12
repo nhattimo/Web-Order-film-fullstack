@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/entities/category.entity';
 import { ProductItem } from 'src/entities/productIteam.entity';
 import { Supplier } from 'src/entities/supplier.entity';
-import { In, Repository } from 'typeorm';
+import { In, Like, Repository } from 'typeorm';
 import { InsertProductItemResponse } from './dto/response/insert-productitem.dto';
 import { InsertProductItemDto } from './dto/request/insert-productitem.dto';
 import { Products } from 'src/entities/product.entity';
@@ -20,6 +20,12 @@ export class ProductItemService {
     @InjectRepository(Products)
     private productsReponsitory: Repository<Products>,
   ) {}
+
+  async getProductItemName(name: string): Promise<ProductItem[]> {
+    return this.productItemReponsitory.find({
+      where: { name: Like(`%${name}%`) },
+    });
+  }
 
   async getProductItem(id: number) {
     const result = await this.productItemReponsitory.findOne({
@@ -38,9 +44,17 @@ export class ProductItemService {
 
   async addProductItem(
     data: InsertProductItemDto,
+    imageFile: Express.Multer.File,
   ): Promise<InsertProductItemResponse> {
     const { categoryId, supplierId, productIds, ...rest } = data;
-    const newProductItem = await this.productItemReponsitory.create(rest);
+    let imageUrl: string;
+    if (imageFile) {
+      imageUrl = imageFile.path;
+    }
+    const newProductItem = this.productItemReponsitory.create({
+      ...rest,
+      imageUrl: imageUrl,
+    });
     if (data.categoryId) {
       const category = await this.categoryReponsitory.findOne({
         where: { id: categoryId },
@@ -67,30 +81,18 @@ export class ProductItemService {
   async updateProductItem(
     id: number,
     data: InsertProductItemDto,
+    imageFile: Express.Multer.File,
   ): Promise<string> {
     const getId = await this.productItemReponsitory.findOne({ where: { id } });
     if (!getId) {
       throw new NotFoundException(`Không tìm thấy ProductItem với id ${id}`);
     }
-    const update = await this.productItemReponsitory.merge(getId, data);
-    if (data.categoryId) {
-      const category = await this.categoryReponsitory.findOne({
-        where: { id: data.categoryId },
-      });
-      update.category = category;
+    let imageUrl: string;
+    if (imageFile) {
+      imageUrl = imageFile.path;
+      data.imageUrl = imageUrl;
     }
-    if (data.supplierId) {
-      const supplier = await this.supplierReponsitory.findOne({
-        where: { id: data.supplierId },
-      });
-      update.supplier = supplier;
-    }
-    if (data.productIds) {
-      const product = await this.productsReponsitory.find({
-        where: { id: In(data.productIds) },
-      });
-      update.products = product;
-    }
+    const update = this.productItemReponsitory.merge(getId, data);
     await this.productItemReponsitory.save(update);
     return 'đã cập nhật thành công';
   }

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Customer } from 'src/entities/customer.entity';
-import { Repository } from 'typeorm';
+import { Between, Like, Repository } from 'typeorm';
 import { UpdateProfileMeDto } from './dto/request/update-profile.dto';
 import { AccountCus } from 'src/entities/accountCus.entity';
 import { RegisterCustomerDto } from './dto/request/register-customer.dto';
@@ -21,6 +21,23 @@ export class CustomerService {
     @InjectRepository(AccountCus)
     private accountCusRepository: Repository<AccountCus>,
   ) {}
+
+  async getByBirthYear(year: number): Promise<Customer[]> {
+    const startDate = new Date(year, 0, 1);
+    const endDate = new Date(year, 11, 31);
+
+    return this.customerRepository.find({
+      where: {
+        birthDate: Between(startDate, endDate),
+      },
+    });
+  }
+
+  async getfirstName(firstName: string): Promise<Customer[]> {
+    return this.customerRepository.find({
+      where: { firstName: Like(`%${firstName}%`) },
+    });
+  }
 
   async getCustomer(id: number) {
     const result = await this.customerRepository.findOne({
